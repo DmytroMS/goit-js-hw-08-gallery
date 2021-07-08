@@ -98,34 +98,33 @@ galleryRef.append(...galleryMarkup);
 
 // Создание разметки галереи методом МАР
 
-    
-const galleryRef = document.querySelector('.js-gallery');
+const galleryRef = document.querySelector('.js-gallery');   
 
-const galleryMarkup = galleryItems.map(item => {
+const galleryMarkUpFunction = ({ preview, original, description }) => {
 
     const galleryItemEl = document.createElement('li');
     galleryItemEl.classList.add('gallery__item');
 
     const galleryLinkEl = document.createElement('a');
     galleryLinkEl.classList.add('gallery__link');
-    galleryLinkEl.href = `${item.original}`;
+    galleryLinkEl.href = `${original}`;
 
     const galleryPicEl = document.createElement('img');
     galleryPicEl.classList.add('gallery__image')
-    galleryPicEl.src = `${item.preview}`;
-    galleryPicEl.dataset.source = `${item.original}`;
-    galleryPicEl.alt = `${item.description}`;
+    galleryPicEl.src = `${preview}`;
+    galleryPicEl.dataset.source = `${original}`;
+    galleryPicEl.alt = `${description}`;
 
     galleryLinkEl.appendChild(galleryPicEl);
 
     return galleryItemEl.appendChild(galleryLinkEl);
-});
+};
 
-galleryRef.append(...galleryMarkup);
-   
+const galleryMarkUp = galleryItems.map(galleryMarkUpFunction);       
+galleryRef.append(...galleryMarkUp);
 
 
-    
+
 
 
 // const galleryMarkup = galleryItems.map(createGalleryList).join('');
