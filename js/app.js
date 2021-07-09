@@ -97,7 +97,7 @@ galleryRef.append(...galleryMarkup);
 
 
 // Создание разметки галереи методом МАР
-
+/*
 const galleryRef = document.querySelector('.js-gallery');   
 
 const galleryMarkUpFunction = ({ preview, original, description }) => {
@@ -122,80 +122,59 @@ const galleryMarkUpFunction = ({ preview, original, description }) => {
 
 const galleryMarkUp = galleryItems.map(galleryMarkUpFunction);       
 galleryRef.append(...galleryMarkUp);
+*/
+
+// Создание разметки по шаблонной строке 
+
+const galleryListRef = document.querySelector('.js-gallery');
+const modalBox = document.querySelector('.js-lightbox');
+const modalImgRef = document.querySelector('.lightbox__image');
+const closeButton = document.querySelector('[data-action="close-lightbox"]');
+
+
+const createGalleryList = images => {
+  const { preview, description, original } = images;
+  return `<li class="gallery__item">
+<a
+  class="gallery__link"
+  href= ""
+>
+  <img
+    class="gallery__image"
+    src=${preview}
+    data-source=${original}
+    alt=${description}
+  />
+</a>
+</li>`;
+};
+
+const galleryMarkup = galleryItems.map(createGalleryList).join('');
+
+galleryListRef.insertAdjacentHTML('beforeend', galleryMarkup);
 
 
 
 
-
-// const galleryMarkup = galleryItems.map(createGalleryList).join('');
-
-// const newGallery = galleryItems.forEach(galleryItem => { createGalleryList(galleryItem) }).join('');
-// console.log('newGallery', newGallery);
-
-// console.log('galleryMarkup', galleryMarkup);
+galleryListRef.addEventListener('click', onPictureClick);
+modalBox.addEventListener('click', onPictureClick);
+closeButton.addEventListener('click', closeButtonFunction); 
 
 
+function onPictureClick(event) {
+      event.preventDefault();
+    if (!event.target.classList.contains('gallery__image')) {
+       return
+    } else {
+    modalBox.classList.add('is-open');
+        modalImgRef.src = event.target.dataset.source;
+          modalImgRef.alt = evt.target.alt;
+    }
+   
+};
 
-
-// const createGalleryList = images => {
-//   const { preview, description, original } = images;
-//   return `<li class="gallery__item">
-// <a
-//   class="gallery__link"
-//   href= ""
-// >
-//   <img
-//     class="gallery__image"
-//     src=${preview}
-//     data-source=${original}
-//     alt=${description}
-//   />
-// </a>
-// </li>`;
-// };
-
-// const galleryMarkupp = galleryItems.map(createGalleryList).join('');
-
-// console.log(galleryMarkupp);
-
-
-
-// const galleryItemEl = document.createElement('li');
-// galleryItemEl.classList.add('gallery__item');
-
-// const galleryLinkEl = document.createElement('a');
-// galleryLinkEl.classList.add('gallery__link');
-// galleryLinkEl.href = 'https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg';
-
-
-// const galleryPicEl = document.createElement('img');
-// galleryPicEl.classList.add('gallery__image')
-// galleryPicEl.src = 'https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546__340.jpg';
-// galleryPicEl.dataset.source = 'https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg';
-// galleryPicEl.alt = 'Tulips';
-
-
-// galleryLinkEl.appendChild(galleryPicEl);
-// galleryItemEl.appendChild(galleryLinkEl);
-
-
-
-// console.log(galleryItemEl);
-
-
-
-
-
-// <li class="gallery__item">
-//   <a
-//     class="gallery__link"
-//     href="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-//   >
-//     <img
-//       class="gallery__image"
-//       src="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546__340.jpg"
-//       data-source="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-//       alt="Tulips"
-//     />
-//   </a>
-// </li>
+function closeButtonFunction(event) {
+    modalBox.classList.remove('is-open');
+    modalImgRef.src = ``;
+    modalImgRef.alt = ``;
+    }
