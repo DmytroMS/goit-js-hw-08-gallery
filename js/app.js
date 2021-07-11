@@ -177,4 +177,7 @@ function closeButtonFunction(event) {
     modalBox.classList.remove('is-open');
     modalImgRef.src = ``;
     modalImgRef.alt = ``;
-    }
+}
+    
+
+
