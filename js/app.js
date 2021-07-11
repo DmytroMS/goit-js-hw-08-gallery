@@ -130,7 +130,7 @@ const galleryListRef = document.querySelector('.js-gallery');
 const modalBox = document.querySelector('.js-lightbox');
 const modalImgRef = document.querySelector('.lightbox__image');
 const closeButton = document.querySelector('[data-action="close-lightbox"]');
-
+let IMG_IDX = 0;
 
 const createGalleryList = images => {
   const { preview, description, original } = images;
@@ -154,11 +154,10 @@ const galleryMarkup = galleryItems.map(createGalleryList).join('');
 galleryListRef.insertAdjacentHTML('beforeend', galleryMarkup);
 
 
+// Открытие модалки 
 
-
+const imgArr = [...document.querySelectorAll(".gallery__image")];
 galleryListRef.addEventListener('click', onPictureClick);
-modalBox.addEventListener('click', onPictureClick);
-closeButton.addEventListener('click', closeButtonFunction); 
 
 
 function onPictureClick(event) {
@@ -168,16 +167,54 @@ function onPictureClick(event) {
     } else {
     modalBox.classList.add('is-open');
         modalImgRef.src = event.target.dataset.source;
-          modalImgRef.alt = evt.target.alt;
+        modalImgRef.alt = event.target.alt;
+        
+        IMG_IDX = imgArr.indexOf(event.target);
+  window.addEventListener("keydown", onKeyPressModal);
     }
    
 };
+
+
+// Закрытие модалки 
+
+const overlay = document.querySelector(".lightbox__overlay");
+overlay.addEventListener("click", closeButtonFunction);
+closeButton.addEventListener('click', closeButtonFunction);
 
 function closeButtonFunction(event) {
     modalBox.classList.remove('is-open');
     modalImgRef.src = ``;
     modalImgRef.alt = ``;
+    window.removeEventListener("keydown", onKeyPressModal);
+    IMG_IDX = 0;
 }
     
 
 
+function onKeyPressModal(e) {   
+switch (e.code) {
+    case "Escape":
+      closeButtonFunction();
+      break;
+    case "ArrowRight":
+      IMG_IDX += 1;
+      if (IMG_IDX === galleryItems.length) {
+        // если дошли до конца галлереи
+        IMG_IDX = 0; // переходим на начало
+      }
+      modalImgRef.src = galleryItems[IMG_IDX].original;
+      modalImgRef.alt = galleryItems[IMG_IDX].description;
+      break;
+    case "ArrowLeft":
+      IMG_IDX -= 1;
+      if (IMG_IDX < 0) {
+        // если дошли до начала галлереи
+        IMG_IDX = galleryItems.length - 1; // переходим в конец
+      }
+      modalImgRef.src = galleryItems[IMG_IDX].original;
+      modalImgRef.alt = galleryItems[IMG_IDX].description;
+      break;
+  }
+
+};
