@@ -200,8 +200,8 @@ switch (e.code) {
     case "ArrowRight":
       IMG_IDX += 1;
       if (IMG_IDX === galleryItems.length) {
-        // если дошли до конца галлереи
-        IMG_IDX = 0; // переходим на начало
+        
+        IMG_IDX = 0; 
       }
       modalImgRef.src = galleryItems[IMG_IDX].original;
       modalImgRef.alt = galleryItems[IMG_IDX].description;
@@ -209,8 +209,8 @@ switch (e.code) {
     case "ArrowLeft":
       IMG_IDX -= 1;
       if (IMG_IDX < 0) {
-        // если дошли до начала галлереи
-        IMG_IDX = galleryItems.length - 1; // переходим в конец
+       
+        IMG_IDX = galleryItems.length - 1; 
       }
       modalImgRef.src = galleryItems[IMG_IDX].original;
       modalImgRef.alt = galleryItems[IMG_IDX].description;
